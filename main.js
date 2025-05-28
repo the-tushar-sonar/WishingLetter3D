@@ -20,23 +20,40 @@ window.addEventListener("DOMContentLoaded", () => {
       scene
     );
 
-    // Camera: UniversalCamera for first-person control
+    // Enable collisions for ground
+    ground.checkCollisions = true;
+
+    // Enable gravity + collisions globally
+    scene.gravity = new BABYLON.Vector3(0, -0.2, 0);
+    scene.collisionsEnabled = true;
+
+    // Camera
     const camera = new BABYLON.UniversalCamera(
       "camera",
       new BABYLON.Vector3(0, 1.8, -5),
       scene
     );
     camera.attachControl(canvas, true);
-    camera.speed = 0.25;
+    camera.speed = 0.5;
 
-    // Enable keyboard movement
+    // First-person keyboard controls
     camera.keysUp.push(87); // W
     camera.keysDown.push(83); // S
     camera.keysLeft.push(65); // A
     camera.keysRight.push(68); // D
 
-    // Load House Model
-    await BABYLON.SceneLoader.ImportMeshAsync("", "./", "house.glb", scene);
+    // Enable camera collisions
+    camera.applyGravity = true;
+    camera.checkCollisions = true;
+    camera.ellipsoid = new BABYLON.Vector3(1, 1.8, 1); // user "capsule"
+
+    // Load house model
+    await BABYLON.SceneLoader.ImportMeshAsync(
+      "",
+      "./objects/",
+      "house.glb",
+      scene
+    );
 
     return scene;
   };
